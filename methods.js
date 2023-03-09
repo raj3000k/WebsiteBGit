@@ -3,10 +3,23 @@ const app=express();
 app.use(express.json());
 app.listen(3000);
 //mini app
+//
+const authRouter=express.Router();
+
+//bae router router to use
+app.use("/auth", authRouter);
+//
 
 const userRouter=express.Router();  //a router to route
 
 //base route , router to use
+
+authRouter
+.route('/signup')
+.get(getSignup)
+.post(postSignup);
+
+
 app.use("/user",userRouter);
 userRouter
 .route("/")
@@ -78,3 +91,18 @@ function getUserById(req,res){
         data:obj
     });
 };
+
+function getSignup(req,res){
+    res.sendFile('/public/index.html',{root:__dirname});
+}
+
+function postSignup(req,res){
+    let obj = req.body;
+    console.log('backend',obj);
+    res.json({
+        message: "user signed up",
+        data:obj
+        
+    });
+
+}
